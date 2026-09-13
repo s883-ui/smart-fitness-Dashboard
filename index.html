@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Fitness & Nutrition Ecosystem — Admin</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root{
+    --bg:#F5F6F8;
+    --surface:#FFFFFF;
+    --border:#E3E6EA;
+    --text:#1F2733;
+    --text-dim:#6B7480;
+    --blue:#2F5DE3;
+    --green:#2FA36B;
+    --amber:#C88A1F;
+    --red:#D4483C;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:-apple-system,Segoe UI,Arial,sans-serif;
+    display:flex; min-height:100vh; font-size:14px;
+  }
+
+  /* Sidebar */
+  .sidebar{
+    width:200px; flex-shrink:0; background:var(--surface);
+    border-right:1px solid var(--border); padding:20px 14px;
+    position:sticky; top:0; height:100vh;
+  }
+  .brand{font-size:15px; font-weight:700; margin-bottom:24px; line-height:1.3;}
+  nav .nav-item{
+    padding:9px 10px; border-radius:6px; color:var(--text-dim);
+    font-size:13.5px; cursor:pointer; margin-bottom:2px;
+  }
+  nav .nav-item:hover{background:#F0F2F5;}
+  nav .nav-item.active{background:#EAF0FE; color:var(--blue); font-weight:600;}
+
+  main{flex:1; padding:24px 32px; max-width:1100px;}
+  .topbar{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:10px;}
+  .topbar h1{font-size:19px; font-weight:700;}
+  .topbar .sub{font-size:12.5px; color:var(--text-dim); margin-top:2px;}
+  select{
+    padding:7px 10px; border:1px solid var(--border); border-radius:6px;
+    background:var(--surface); font-size:13px; color:var(--text);
+  }
+
+  .view{display:none;}
+  .view.active{display:block;}
+
+  .grid{display:grid; gap:14px;}
+  .grid-4{grid-template-columns:repeat(4,1fr);}
+  .grid-2{grid-template-columns:1.4fr 1fr;}
+  @media(max-width:900px){.grid-4{grid-template-columns:repeat(2,1fr);} .grid-2{grid-template-columns:1fr;}}
+
+  .card{
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:8px; padding:16px;
+  }
+  .card h3{font-size:13px; font-weight:600; margin-bottom:12px; color:var(--text);}
+  .card .tag{font-size:11.5px; font-weight:400; color:var(--text-dim); float:right;}
+
+  .stat .label{font-size:12px; color:var(--text-dim); margin-bottom:6px;}
+  .stat .value{font-size:24px; font-weight:700;}
+  .stat .delta{font-size:11.5px; margin-top:5px;}
+  .delta.up{color:var(--green);}
+  .delta.down{color:var(--red);}
+
+  .section-title{font-size:14px; font-weight:700; margin:24px 0 12px;}
+  .section-title:first-of-type{margin-top:0;}
+
+  table{width:100%; border-collapse:collapse; font-size:13px;}
+  th{
+    text-align:left; font-weight:600; color:var(--text-dim);
+    padding:8px 6px; border-bottom:1px solid var(--border); font-size:12px;
+  }
+  td{padding:9px 6px; border-bottom:1px solid var(--border);}
+  tr:last-child td{border-bottom:none;}
+
+  .pill{font-size:11.5px; padding:3px 9px; border-radius:12px; font-weight:600;}
+  .pill.active{background:#E6F5EC; color:var(--green);}
+  .pill.pending{background:#FCF1DD; color:var(--amber);}
+  .pill.paused{background:#FBEAE8; color:var(--red);}
+  canvas{max-width:100%;}
+</style>
+</head>
+<body>
+
+<aside class="sidebar">
+  <div class="brand">Smart Fitness &amp;<br>Nutrition Ecosystem</div>
+  <nav>
+    <div class="nav-item active" data-view="overview">Overview</div>
+    <div class="nav-item" data-view="users">Users</div>
+    <div class="nav-item" data-view="gyms">Gyms &amp; Staff</div>
+    <div class="nav-item" data-view="ai">AI Plans</div>
+    <div class="nav-item" data-view="billing">Subscriptions</div>
+  </nav>
+</aside>
+
+<main>
+
+  <!-- OVERVIEW -->
+  <div class="view active" id="view-overview">
+    <div class="topbar">
+      <div>
+        <h1>Overview</h1>
+        <div class="sub">Platform activity across all partner gyms</div>
+      </div>
+      <select><option>Last 30 days</option><option>Last 7 days</option><option>Last 90 days</option></select>
+    </div>
+
+    <div class="grid grid-4">
+      <div class="card stat">
+        <div class="label">Total registered users</div>
+        <div class="value">18,420</div>
+        <div class="delta up">▲ 1,140 new this month</div>
+      </div>
+      <div class="card stat">
+        <div class="label">Active users (last 7 days)</div>
+        <div class="value">9,860</div>
+        <div class="delta up">▲ 6.3% vs prior week</div>
+      </div>
+      <div class="card stat">
+        <div class="label">Partner gyms</div>
+        <div class="value">64</div>
+        <div class="delta up">▲ 3 onboarded this month</div>
+      </div>
+      <div class="card stat">
+        <div class="label">Professionals (trainers + nutritionists)</div>
+        <div class="value">412</div>
+        <div class="delta">No change</div>
+      </div>
+    </div>
+
+    <div class="section-title">User growth</div>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>New registrations <span class="tag">Last 6 months</span></h3>
+        <canvas id="chartSignups" height="150"></canvas>
+      </div>
+      <div class="card">
+        <h3>Users by role <span class="tag">18,420 total</span></h3>
+        <canvas id="chartRoles" height="150"></canvas>
+      </div>
+    </div>
+
+    <div class="section-title">Engagement</div>
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Daily active users <span class="tag">This week</span></h3>
+        <canvas id="chartDAU" height="150"></canvas>
+      </div>
+      <div class="card">
+        <h3>Subscription tiers <span class="tag">Of active users</span></h3>
+        <canvas id="chartTiers" height="150"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- USERS -->
+  <div class="view" id="view-users">
+    <div class="topbar">
+      <div>
+        <h1>Users</h1>
+        <div class="sub">Aggregate counts only — no individual profiles shown here</div>
+      </div>
+    </div>
+
+    <div class="grid grid-4">
+      <div class="card stat"><div class="label">Members</div><div class="value">17,540</div></div>
+      <div class="card stat"><div class="label">Trainers</div><div class="value">268</div></div>
+      <div class="card stat"><div class="label">Nutritionists</div><div class="value">144</div></div>
+      <div class="card stat"><div class="label">Gym admins</div><div class="value">64</div></div>
+    </div>
+
+    <div class="section-title">Registrations by month</div>
+    <div class="card">
+      <table>
+        <tr><th>Month</th><th>New members</th><th>New professionals</th><th>Total sign-ups</th></tr>
+        <tr><td>April</td><td>1,320</td><td>18</td><td>1,338</td></tr>
+        <tr><td>May</td><td>1,410</td><td>22</td><td>1,432</td></tr>
+        <tr><td>June</td><td>1,580</td><td>19</td><td>1,599</td></tr>
+        <tr><td>July</td><td>1,690</td><td>27</td><td>1,717</td></tr>
+        <tr><td>August</td><td>1,860</td><td>24</td><td>1,884</td></tr>
+        <tr><td>September</td><td>1,140</td><td>15</td><td>1,155</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- GYMS -->
+  <div class="view" id="view-gyms">
+    <div class="topbar">
+      <div><h1>Gyms &amp; Staff</h1><div class="sub">Partner branches on the platform</div></div>
+    </div>
+
+    <div class="grid grid-4">
+      <div class="card stat"><div class="label">Active branches</div><div class="value">61</div></div>
+      <div class="card stat"><div class="label">Pending approval</div><div class="value">3</div></div>
+      <div class="card stat"><div class="label">Avg. members per branch</div><div class="value">287</div></div>
+      <div class="card stat"><div class="label">Avg. staff per branch</div><div class="value">6.4</div></div>
+    </div>
+
+    <div class="section-title">Branch status</div>
+    <div class="card">
+      <table>
+        <tr><th>Branch</th><th>City</th><th>Members</th><th>Staff</th><th>Status</th></tr>
+        <tr><td>Iron Gym — Branch 1</td><td>Cairo</td><td>412</td><td>9</td><td><span class="pill active">Active</span></td></tr>
+        <tr><td>Iron Gym — Branch 2</td><td>Giza</td><td>365</td><td>7</td><td><span class="pill active">Active</span></td></tr>
+        <tr><td>PulseFit</td><td>Alexandria</td><td>298</td><td>6</td><td><span class="pill active">Active</span></td></tr>
+        <tr><td>CoreZone</td><td>Beni Suef</td><td>184</td><td>5</td><td><span class="pill pending">Pending review</span></td></tr>
+        <tr><td>SteelBody</td><td>Mansoura</td><td>0</td><td>3</td><td><span class="pill paused">Paused</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- AI PLANS -->
+  <div class="view" id="view-ai">
+    <div class="topbar">
+      <div><h1>AI Plans</h1><div class="sub">Plan generation and professional review status</div></div>
+    </div>
+
+    <div class="grid grid-4">
+      <div class="card stat"><div class="label">Plans generated this month</div><div class="value">4,930</div></div>
+      <div class="card stat"><div class="label">Approved without edits</div><div class="value">71%</div></div>
+      <div class="card stat"><div class="label">Edited by professional</div><div class="value">24%</div></div>
+      <div class="card stat"><div class="label">Flagged high-risk</div><div class="value">5%</div></div>
+    </div>
+
+    <div class="section-title">Plan review queue</div>
+    <div class="card">
+      <table>
+        <tr><th>Plan type</th><th>Generated</th><th>Awaiting review</th><th>Approved</th></tr>
+        <tr><td>Workout plans</td><td>2,610</td><td>142</td><td>2,468</td></tr>
+        <tr><td>Meal plans</td><td>2,320</td><td>98</td><td>2,222</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- SUBSCRIPTIONS -->
+  <div class="view" id="view-billing">
+    <div class="topbar">
+      <div><h1>Subscriptions</h1><div class="sub">Membership tiers across the platform</div></div>
+    </div>
+
+    <div class="grid grid-4">
+      <div class="card stat"><div class="label">Free tier</div><div class="value">8,210</div></div>
+      <div class="card stat"><div class="label">Standard</div><div class="value">6,540</div></div>
+      <div class="card stat"><div class="label">Elite</div><div class="value">2,890</div></div>
+      <div class="card stat"><div class="label">Active offers redeemed</div><div class="value">1,205</div></div>
+    </div>
+
+    <div class="section-title">Active offers</div>
+    <div class="card">
+      <table>
+        <tr><th>Offer</th><th>Code</th><th>Redemptions</th><th>Status</th></tr>
+        <tr><td>20% off nutrition sessions</td><td>FUEL20</td><td>640</td><td><span class="pill active">Live</span></td></tr>
+        <tr><td>Free AI plan regeneration</td><td>FREEGEN</td><td>380</td><td><span class="pill active">Live</span></td></tr>
+        <tr><td>Referral credit</td><td>INVITE10</td><td>185</td><td><span class="pill pending">Ending soon</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+</main>
+
+<script>
+Chart.defaults.color = '#6B7480';
+Chart.defaults.font.family = "-apple-system, Segoe UI, Arial, sans-serif";
+Chart.defaults.font.size = 11;
+Chart.defaults.borderColor = '#E3E6EA';
+
+function switchView(name){
+  document.querySelectorAll('.nav-item').forEach(el=>el.classList.toggle('active', el.dataset.view===name));
+  document.querySelectorAll('.view').forEach(el=>el.classList.toggle('active', el.id==='view-'+name));
+}
+document.querySelectorAll('.nav-item').forEach(el=>el.addEventListener('click', ()=>switchView(el.dataset.view)));
+
+new Chart(document.getElementById('chartSignups'), {
+  type:'bar',
+  data:{
+    labels:['Apr','May','Jun','Jul','Aug','Sep'],
+    datasets:[{
+      label:'New sign-ups',
+      data:[1338,1432,1599,1717,1884,1155],
+      backgroundColor:'#2F5DE3',
+      borderRadius:4,
+      maxBarThickness:34
+    }]
+  },
+  options:{
+    plugins:{legend:{display:false}},
+    scales:{ y:{beginAtZero:true, grid:{color:'#EEF0F3'}}, x:{grid:{display:false}} }
+  }
+});
+
+new Chart(document.getElementById('chartRoles'), {
+  type:'pie',
+  data:{
+    labels:['Members','Trainers','Nutritionists','Gym admins'],
+    datasets:[{
+      data:[17540,268,144,64],
+      backgroundColor:['#2F5DE3','#2FA36B','#C88A1F','#8A93A6']
+    }]
+  },
+  options:{ plugins:{legend:{position:'bottom', labels:{boxWidth:10, font:{size:11}}}} }
+});
+
+new Chart(document.getElementById('chartDAU'), {
+  type:'bar',
+  data:{
+    labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+    datasets:[{
+      label:'Active users',
+      data:[8200,8450,9100,9600,9860,7200,6800],
+      backgroundColor:'#2FA36B',
+      borderRadius:4,
+      maxBarThickness:28
+    }]
+  },
+  options:{
+    plugins:{legend:{display:false}},
+    scales:{ y:{beginAtZero:true, grid:{color:'#EEF0F3'}}, x:{grid:{display:false}} }
+  }
+});
+
+new Chart(document.getElementById('chartTiers'), {
+  type:'pie',
+  data:{
+    labels:['Free','Standard','Elite'],
+    datasets:[{
+      data:[8210,6540,2890],
+      backgroundColor:['#8A93A6','#2F5DE3','#C88A1F']
+    }]
+  },
+  options:{ plugins:{legend:{position:'bottom', labels:{boxWidth:10, font:{size:11}}}} }
+});
+</script>
+</body>
+</html>
