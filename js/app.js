@@ -13,16 +13,50 @@ function skeleton(){return `<div class="skel" style="height:16px;width:180px;mar
  <div class="grid g4 mb">${'<div class="skel" style="height:128px;border-radius:18px"></div>'.repeat(4)}</div>
  <div class="grid g-main"><div class="skel" style="height:320px;border-radius:18px"></div><div class="skel" style="height:320px;border-radius:18px"></div></div>`}
 
+// ===== عناصر القايمة الجانبية =====
+// id = اسم الصفحة (نفس اسمها في P). g = عنوان مجموعة. sub = صفحات فرعية (زي التقارير)
+const NAV=[
+ {g:{ar:'الرئيسية',en:'Main'}},
+ {id:'dashboard',ic:'grid_view',t:{ar:'لوحة التحكم',en:'Dashboard'}},
+ {id:'reports',ic:'monitoring',t:{ar:'التقارير',en:'Reports'},sub:[
+   {id:'reports-staff',t:{ar:'أداء الكادر',en:'Staff performance'}}]},
+ {g:{ar:'المتدربين والتدريب',en:'Members & training'}},
+ {id:'trainees',ic:'group',t:{ar:'المتدربين',en:'Trainees'},badge:'1,842'},
+ {id:'requests',ic:'how_to_reg',t:{ar:'طلبات التسجيل',en:'Registration requests'},count:()=>REQUESTS.filter(r=>r.status==='pending').length},
+ {id:'programs',ic:'exercise',t:{ar:'البرامج التدريبية',en:'Training programs'}},
+ {g:{ar:'التغذية',en:'Nutrition'}},
+ {id:'nutrition',ic:'restaurant',t:{ar:'الأنظمة الغذائية',en:'Diet plans'}},
+ {id:'calories',ic:'calculate',t:{ar:'حاسبة السعرات',en:'Calorie calculator'}},
+ {id:'recipes',ic:'menu_book',t:{ar:'وصفات صحية جاهزة',en:'Healthy recipes'}},
+ {g:{ar:'الكادر',en:'Staff'}},
+ {id:'trainers',ic:'sports',t:{ar:'المدربين',en:'Coaches'}},
+ {id:'nutritionists',ic:'nutrition',t:{ar:'أخصائيو التغذية',en:'Nutritionists'}},
+ {g:{ar:'الإدارة',en:'Management'}},
+ {id:'gyms',ic:'storefront',t:{ar:'الجيمات المتعاقدة',en:'Partner gyms'},isNew:1},
+ {id:'subscriptions',ic:'credit_card',t:{ar:'الاشتراكات والفواتير',en:'Subscriptions & billing'}},
+ {id:'ai',ic:'neurology',t:{ar:'تحليلات الذكاء الاصطناعي',en:'AI insights'}},
+ {g:{ar:'الدعم والتواصل',en:'Support'}},
+ {id:'tickets',ic:'support_agent',t:{ar:'تذاكر الدعم',en:'Support tickets'},count:()=>TICKETS.filter(t=>t.status==='open').length},
+ {id:'chats',ic:'forum',t:{ar:'متابعة المحادثات',en:'Chat monitoring'},count:()=>CHATS.filter(c=>c.flag).length},
+ {id:'settings',ic:'settings',t:{ar:'الإعدادات',en:'Settings'}},
+];
 // ===== القايمة الجانبية =====
-// بنلف على NAV ونعمل لينك لكل صفحة. href="#id" هو اللي بيغيّر اللينك فوق،
-// والصفحة المفتوحة (S.page) بتاخد class="active"
+// بنلف على NAV ونعمل لينك لكل صفحة. الصفحة المفتوحة (S.page) بتاخد class="active"
+// "التقارير" ليها صفحات فرعية بتتفتح وتتقفل بالسهم
+function navLink(n,cls=''){const on=S.page===n.id, c=n.count?n.count():0;
+ return `<a href="#${n.id}" class="${cls} ${on?'active':''}" ${on?'aria-current="page"':''} onclick="toggleNav(false);go('${n.id}');return false;">${n.ic?ic(n.ic):'<span class="sub-dot"></span>'}<span>${T(n.t)}</span>${n.badge?`<span class="badge">${n.badge}</span>`:c?`<span class="badge alert">${fmt(c)}</span>`:n.isNew?`<span class="new">${L('جديد','New')}</span>`:''}</a>`}
 function renderSide(){
+ const navHtml=NAV.map(n=>{if(n.g) return `<div class="nav-group">${T(n.g)}</div>`;
+  if(n.sub){const inside=n.sub.some(x=>x.id===S.page), open=S.open[n.id]||inside;
+   return `<button class="nav-parent ${inside?'inside':''}" aria-expanded="${open}" onclick="toggleSub('${n.id}')">${ic(n.ic)}<span>${T(n.t)}</span>${ic('expand_more','chev')}</button>${open?`<div class="nav-sub">${n.sub.map(x=>navLink(x,'sub')).join('')}</div>`:''}`}
+  return navLink(n)}).join('');
  document.getElementById('side').innerHTML=`<div class="brand"><div class="brand-mark">${ic('exercise')}</div><div><div class="brand-name" dir="ltr" style="text-align:start">Smart Fitness<br>&amp; Nutrition</div><div class="brand-sub">${L('منصة الصالات الرياضية','Gym management platform')}</div></div></div>
- <nav class="nav" aria-label="main">${NAV.map(n=>n.g?`<div class="nav-group">${T(n.g)}</div>`:`<a href="#${n.id}" class="${S.page===n.id?'active':''}" ${S.page===n.id?'aria-current="page"':''} onclick="toggleNav(false);go('${n.id}');return false;">${ic(n.ic)}<span>${T(n.t)}</span>${n.badge?`<span class="badge">${n.badge}</span>`:n.isNew?`<span class="new">${L('جديد','New')}</span>`:''}</a>`).join('')}</nav>
+ <nav class="nav" aria-label="main">${navHtml}</nav>
  <div class="side-foot"><div class="cap"><div class="cap-row"><span>${L('سعة الصالة الآن','Gym capacity now')}</span><b>78%</b></div><div class="bar"><i style="width:78%"></i></div></div>
  <div class="cap"><div class="cap-row" style="margin:0"><span>${L('مزامنة الأجهزة','Device sync')}</span><span class="small"><span class="dot"></span> ${L('متصل','Online')}</span></div></div>
  <div class="side-links"><button>${ic('help_outline')}${L('المساعدة','Help')}</button><button>${ic('logout')}${L('خروج','Log out')}</button></div></div>`;
 }
+function toggleSub(id){const inside=NAV.find(n=>n.id===id).sub.some(x=>x.id===S.page);S.open[id]=!(S.open[id]||inside);if(inside&&!S.open[id])S.open[id]=false;renderSide()}
 // ===== الشريط اللي فوق: زرار ☰ للموبايل، البحث، اللغة، المظهر، الإشعارات، المستخدم =====
 function renderTop(){
  const th=document.documentElement.getAttribute('data-theme');
@@ -53,7 +87,7 @@ function go(id){
 // 3) بعد 450ms يرسم الصفحة الحقيقية
 function route(){ openPage((location.hash||'#dashboard').slice(1)) }
 function openPage(id){
- S.page=P[id]?id:'dashboard';
+ if(id==='reports')id='reports-staff'; S.page=P[id]?id:'dashboard';
  renderSide(); closeModal(); killCharts();
  document.getElementById('content').innerHTML=skeleton(); window.scrollTo(0,0);
  clearTimeout(route.t); route.t=setTimeout(()=>render(),450);
@@ -72,19 +106,19 @@ function toggleNav(open){document.body.classList.toggle('nav-open',open)}
 // كلهم نفس الفكرة: غيّر قيمة في S، وبعدين render(true)
 // (true معناها متطلعش لأول الصفحة). refocus بترجّع المؤشر لخانة البحث بعد الرسم
 function refocus(id){const i=document.getElementById(id);if(i){i.focus();i.setSelectionRange(i.value.length,i.value.length)}}
-function setDashTab(k){S.dash.tab=k;S.dash.p=1;render(true)}
-function setDashQ(v,clear){S.dash.q=v;S.dash.p=1;render(true);if(!clear)refocus('dashQ')}
-function setDashPage(p){S.dash.p=p;render(true)}
-function setTrStatus(k){S.tr.status=k;render(true)}
-function setTrCoach(v){S.tr.coach=v;render(true)}
-function setTrQ(v){S.tr.q=v;render(true);refocus('trQ')}
-function setTrView(v){S.tr.view=v;render(true)}
-function resetTr(){S.tr={status:'all',coach:'all',q:'',view:S.tr.view};render(true)}
-function setProgCat(k){S.prog.cat=k;render(true)}
-function setNutCat(k){S.nut.cat=k;render(true)}
-function setCoachCat(k){S.coach.cat=k;render(true)}
-function setSubTab(k){S.sub.tab=k;render(true)}
-function setSubQ(v,clear){S.sub.q=v;render(true);if(!clear)refocus('subQ')}
+// ===== Handlers الجداول (listView) =====
+// lsTab = غيّر الـ tab، lsQ = البحث، lsF = فلتر، lsP = رقم الصفحة، lsView = جدول/كروت
+// lsAdv = افتح/اقفل البحث المتقدم، lsClear = امسح كل الفلاتر، lsOpen = زرار "عرض" (العين)
+function lsTab(k,v){const s=LS(k);s.tab=v;s.p=1;render(true)}
+function lsQ(k,v){const s=LS(k);s.q=v;s.p=1;render(true);refocus('q-'+k)}
+function lsF(k,f,v){const s=LS(k);s.f[f]=v;s.p=1;render(true)}
+function lsP(k,p){LS(k).p=p;render(true);const el=document.getElementById('q-'+k);if(el&&el.closest('.card').scrollIntoView)el.closest('.card').scrollIntoView({block:'start',behavior:'smooth'})}
+function lsView(k,v){LS(k).view=v;render(true)}
+function lsAdv(k){const s=LS(k);s.adv=!s.adv;render(true)}
+function lsClear(k){const s=LS(k);s.q='';s.f={};s.p=1;render(true)}
+function lsOpen(k,id){const c=LISTS[k];if(!c||!c.detail)return;const r=c.rows.find(x=>x.id===id);if(r)openModal(c.detail(r))}
+// رسالة صغيرة بتظهر تحت وتختفي (toast)
+function toast(msg){let t=document.getElementById('toast');if(!t){t=document.createElement('div');t.id='toast';t.setAttribute('role','status');document.body.appendChild(t)}t.innerHTML=ic('check_circle')+msg;t.className='show';clearTimeout(toast.t);toast.t=setTimeout(()=>t.className='',2600)}
 function hideBanner(k){S.hidden[k]=1;render(true)}
 function setCalc(k,v,rerender){S.calc[k]=v;if(rerender)render(true);else calcResult()}
 // زرار Esc يقفل نافذة الوصفة أو القايمة

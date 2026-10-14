@@ -295,3 +295,127 @@ tbody tr:hover td{background:var(--surface2)}
   .kpi-val{font-size:26px}
   .ai{flex-direction:column}
 }
+
+/* ---------- 20) الفلاتر والبحث المتقدم (listView) ---------- */
+.filters{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:14px}
+.filters .field.grow{flex:1 1 260px}
+.field.sel{padding-block:5px}
+.field.sel select{max-width:230px;cursor:pointer;padding:2px 0}
+.adv-btn.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+.count{display:inline-grid;place-items:center;min-width:20px;height:20px;padding:0 6px;border-radius:20px;background:var(--lime);color:#000;font-size:11px;font-weight:700}
+.icon-btn.clr:disabled{opacity:.35;cursor:default}
+.adv-panel{background:var(--surface2);border:1px dashed var(--border);border-radius:14px;padding:12px 14px;margin-bottom:14px}
+.adv-title{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;margin-bottom:10px}
+.adv-title .ms{font-size:19px;color:var(--accent-text)}
+.adv-grid{display:flex;flex-wrap:wrap;gap:10px}
+.adv-grid .field{background:var(--surface)}
+.pager-card{padding:10px 20px}
+.pager-card .pager{margin-top:0}
+.seg.vt{width:auto}
+.seg.vt button{padding:6px 10px}
+
+/* ---------- 21) الرقم التعريفي وأزرار الإجراءات ---------- */
+.idc{display:inline-block;direction:ltr;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:12px;background:var(--surface2);color:var(--muted);padding:3px 8px;border-radius:8px;white-space:nowrap}
+.idc.on-dark{background:rgba(0,0,0,.6);color:#fff}
+.row-actions{display:flex;gap:2px;justify-content:flex-start}
+.ia{width:32px;height:32px;border:0;background:none;border-radius:8px;color:var(--muted);display:grid;place-items:center}
+.ia:hover{background:var(--surface2);color:var(--text)}
+.ia .ms{font-size:20px}
+
+/* ---------- 22) كروت البرامج بصورة (زي الصورة 8) ---------- */
+.pcard2{padding:0;overflow:hidden;display:flex;flex-direction:column}
+.p-hero{position:relative;height:170px;background:#0c0c0c;color:#fff;overflow:hidden}
+.p-hero::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,rgba(182,255,0,.07) 0 2px,transparent 2px 18px)}
+.p-hero::after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle,rgba(182,255,0,.35),transparent 65%);top:-60px;inset-inline-end:-40px}
+.p-hero.cat-cut::before{background:repeating-linear-gradient(45deg,rgba(182,255,0,.07) 0 2px,transparent 2px 16px)}
+.p-hero.cat-rehab::before{background:radial-gradient(rgba(182,255,0,.12) 1.5px,transparent 1.5px) 0 0/16px 16px}
+.p-hero.cat-str::before{background:repeating-linear-gradient(0deg,rgba(182,255,0,.07) 0 2px,transparent 2px 18px)}
+.hero-ic{position:absolute;inset-inline-end:28px;top:40px;font-size:84px;color:var(--lime);z-index:1;opacity:.95}
+.hero-chip{position:absolute;top:12px;inset-inline-start:12px;z-index:2;background:var(--lime)!important;color:#000!important;font-weight:600}
+.p-hero .idc{position:absolute;top:12px;inset-inline-end:12px;z-index:2}
+.hero-foot{position:absolute;bottom:12px;inset-inline:12px;display:flex;justify-content:space-between;gap:6px;flex-wrap:wrap;z-index:2}
+.chip.dark{background:rgba(0,0,0,.65);color:#fff}
+.chip.dark .ms,.chip .ms{font-size:15px}
+.r-hero .r-id{position:absolute;top:12px;inset-inline-end:12px;z-index:1}
+
+/* ---------- 23) كروت الكادر (زي الصورة 10) ---------- */
+.scard{display:flex;flex-direction:column;gap:12px}
+.s-person{display:flex;gap:12px;align-items:center}
+.s-person h3{font-size:16px}
+.avatar.lg{width:56px;height:56px;font-size:17px;position:relative;border-radius:16px}
+.avatar.gym{background:var(--surface2);color:var(--text)}
+.vb{position:absolute;bottom:-4px;inset-inline-end:-4px;font-size:18px!important;color:#000;background:var(--lime);border-radius:50%;border:2px solid var(--surface)}
+.s-title{color:var(--accent-text);font-size:13px;font-weight:600;margin-top:2px}
+.s-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--surface2);border-radius:12px;padding:10px}
+.s-stats span{display:block;font-size:11.5px;color:var(--muted)}
+.s-stats b{font-size:14px}
+.metric .mrow{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted);margin-bottom:6px}
+.metric .mrow b{color:var(--text)}
+.bar.alt>i{background:var(--text)}
+.btn.grow{flex:1;justify-content:center}
+.dot-s{width:7px;height:7px;border-radius:50%;background:currentColor;display:inline-block}
+.lnk{color:var(--accent-text);font-weight:600;text-decoration:none}
+
+/* ---------- 24) تفاصيل داخل الـ modal ---------- */
+.modal.wide{max-width:820px}
+.dl{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:12px}
+.dl div{background:var(--surface2);border-radius:10px;padding:10px 12px}
+.dl span{display:block;font-size:12px;color:var(--muted);margin-bottom:2px}
+.dl b{font-size:14px;font-weight:600}
+.mini-row{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.mini-row .ms{font-size:18px;vertical-align:-4px}
+
+/* ---------- 25) القايمة الجانبية: صفحات فرعية وعدّادات ---------- */
+.nav-parent{display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px;border-radius:10px;border:0;background:none;color:var(--text);font:inherit;font-size:14px;margin-bottom:2px;text-align:start}
+.nav-parent:hover{background:var(--surface2)}
+.nav-parent.inside{color:var(--accent-text);font-weight:600}
+.nav-parent .chev{margin-inline-start:auto;font-size:20px;transition:transform .2s}
+.nav-parent[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.nav-sub{margin:0 0 6px;margin-inline-start:22px;padding-inline-start:10px;border-inline-start:1px solid var(--border)}
+.nav a.sub{padding:8px 12px;font-size:13.5px}
+.sub-dot{width:6px;height:6px;border-radius:50%;background:var(--muted);margin-inline:7px}
+.nav a.active .sub-dot{background:#000}
+.badge.alert{background:var(--lime)!important;color:#000!important;font-weight:700}
+
+/* ---------- 26) طلبات التسجيل ---------- */
+.pipe{display:flex;justify-content:space-between;align-items:center;text-align:start;width:100%;font:inherit;color:inherit;cursor:pointer}
+.pipe.sel{outline:2px solid var(--lime);outline-offset:-2px}
+.pipe-ic{width:48px;height:48px;border-radius:14px;display:grid;place-items:center}
+.pipe-ic.warn{background:var(--warn-soft);color:var(--warn)}
+.pipe-ic.ok{background:var(--lime-soft);color:var(--accent-text)}
+.pipe-ic.bad{background:var(--danger-soft);color:var(--danger)}
+
+/* ---------- 27) المحادثات والتذاكر ---------- */
+.thread{display:flex;flex-direction:column;gap:10px;padding:8px 0}
+.bubble{max-width:80%;padding:10px 14px;border-radius:16px;font-size:14px;line-height:1.5}
+.bubble.in{align-self:flex-start;background:var(--surface2);border-end-start-radius:4px}
+.bubble.out{align-self:flex-end;background:var(--lime);color:#000;border-end-end-radius:4px}
+.bubble span{display:block;font-size:11px;opacity:.65;margin-top:4px}
+.reply textarea{width:100%;margin-top:10px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:10px 12px;resize:vertical;font:inherit;color:inherit;outline:none}
+.reply textarea:focus{border-color:var(--lime)}
+.chat-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.35fr);gap:16px;align-items:start}
+.chat-list{grid-template-columns:1fr;gap:8px}
+.chat-item{display:flex;gap:10px;align-items:flex-start;width:100%;text-align:start;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px;position:relative;cursor:pointer;font:inherit;color:inherit}
+.chat-item:hover{border-color:var(--muted)}
+.chat-item.on{border-color:var(--lime);border-inline-start:4px solid var(--lime)}
+.ci-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.ci-top{display:flex;justify-content:space-between;gap:8px}
+.ci-body .ms{font-size:15px;vertical-align:-3px}
+.ci-last{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ci-flag{position:absolute;bottom:12px;inset-inline-end:12px;width:9px;height:9px;border-radius:50%}
+.ci-flag.bad{background:var(--danger)}.ci-flag.warn{background:var(--warn)}
+.chat-pane{position:sticky;top:84px}
+.chat-pane .person b{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.chat-pane .person .ms{font-size:18px;color:var(--muted)}
+.warn-note{background:var(--warn-soft);color:var(--text);padding:10px 12px;border-radius:12px;margin:0 0 10px;align-items:center}
+.chat-actions{margin-top:14px;border-top:1px solid var(--border);padding-top:14px}
+#toast{position:fixed;bottom:calc(24px + env(safe-area-inset-bottom,0px));left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:var(--text);color:var(--bg);padding:10px 16px;border-radius:12px;display:flex;align-items:center;gap:8px;font-size:14px;z-index:80;transition:.25s}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+#toast .ms{color:var(--lime)}
+@media (max-width:1024px){.chat-layout{grid-template-columns:1fr}.chat-pane{position:static}}
+@media (max-width:640px){.filters .field,.field.sel select{flex:1 1 100%;max-width:none}.dl{grid-template-columns:1fr}.s-stats{grid-template-columns:1fr 1fr 1fr}}
+
+/* صورة البرنامج: طبقة غامقة عشان الكلام اللي فوقها يبان */
+.p-hero.has-img::before{background:linear-gradient(180deg,rgba(0,0,0,.45) 0%,rgba(0,0,0,0) 38%,rgba(0,0,0,0) 55%,rgba(0,0,0,.7) 100%);z-index:1}
+.p-hero.has-img::after{display:none}
+.p-hero>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
