@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SFNE Admin · Auth</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Inter:wght@400;500&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#E0DFCE;--fld:#F5F0E8;--card:#fff;--tx:#2B362E;--mut:#6b7367;--line:#e3dccf;--pri:#6B8063;--spr:#BFC4A3;--acc:#D9875A;--cta:#9A4F27;--ctx:#fff;--err:#B8473A;--errbg:#fbebe8;--okbg:#e9efe5;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d2620;--fld:#2B362E;--card:#2B362E;--tx:#F5F0E8;--mut:#BFC4A3;--line:#3f4c42;--pri:#BFC4A3;--cta:#D9875A;--ctx:#2B362E;--err:#ff8f80;--errbg:#4a2a26;--okbg:#34443a;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1d2620;--fld:#2B362E;--card:#2B362E;--tx:#F5F0E8;--mut:#BFC4A3;--line:#3f4c42;--pri:#BFC4A3;--cta:#D9875A;--ctx:#2B362E;--err:#ff8f80;--errbg:#4a2a26;--okbg:#34443a;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:400 16px/1.6 Inter,Cairo,system-ui,sans-serif;min-height:100vh}
+[dir=rtl] body,[dir=rtl] input,[dir=rtl] button{font-family:Cairo,Inter,system-ui,sans-serif}
+h1,h2,h3,.brand b{font-family:Poppins,Cairo,sans-serif;margin:0}
+.nav{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.brand{display:flex;align-items:center;gap:14px;line-height:1.25}.brand b{font-size:18px;font-weight:700;letter-spacing:-.4px;display:block}.brand b i{font-style:normal;color:color-mix(in srgb,var(--acc) 75%,var(--tx))}.brand small{color:color-mix(in srgb,var(--pri) 70%,var(--tx));font-size:15px;font-weight:700;display:block}
+.logo{width:56px;height:56px;border-radius:16px;background:var(--pri);display:grid;place-items:center;box-shadow:0 4px 12px rgba(107,128,99,.35);flex:none}
+.nav .btns{display:flex;gap:8px;align-items:center}
+.pill{border:1.5px solid var(--tx);background:transparent;color:var(--tx);border-radius:999px;padding:7px 16px;cursor:pointer;font:inherit;font-size:14px;font-weight:600;text-decoration:none;display:inline-block}.pill.cta{background:var(--cta);border-color:var(--cta);color:var(--ctx)}.ic svg{width:24px;height:24px}.ic{width:52px;height:52px;border-radius:50%;border:2px solid #B2AB9C;background:transparent;color:var(--tx);display:grid;place-items:center;cursor:pointer;padding:0}
+.demo{margin:10px auto 0;width:min(1100px,calc(100% - 24px));font-size:13px;color:var(--mut);text-align:center}
+.demo code{background:var(--okbg);padding:1px 6px;border-radius:6px;direction:ltr;unicode-bidi:embed}
+.grid{width:min(1100px,calc(100% - 24px));margin:20px auto;display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center;min-height:calc(100vh - 150px)}
+.hero h1{font-size:clamp(30px,4.4vw,52px);line-height:1.25}.hero h1 span{color:var(--pri)}
+.plan{position:relative;margin:26px 0 48px;background:var(--card);border:1px solid var(--line);border-radius:28px;padding:22px;max-width:480px}
+.plan .row{display:flex;gap:18px;align-items:center}.badge{display:inline-flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:13px;color:var(--mut);margin-bottom:14px}.ph{display:flex;justify-content:space-between;align-items:center;padding-bottom:12px;margin-bottom:14px;border-bottom:1px solid var(--line)}.live{display:inline-flex;align-items:center;gap:6px;background:var(--bg);border-radius:99px;padding:3px 10px;font:600 11px Poppins,sans-serif;letter-spacing:.5px}.live u{width:8px;height:8px;border-radius:50%;background:var(--acc)}.strip{display:flex;gap:12px;align-items:center;margin-top:16px;padding:14px;border-radius:18px;background:color-mix(in srgb,var(--pri) 12%,var(--bg))}.strip small,.coach small{color:var(--mut);display:block}.sic{width:40px;height:40px;border-radius:12px;background:color-mix(in srgb,var(--pri) 22%,var(--card));display:grid;place-items:center;color:var(--pri)}.coach{position:absolute;bottom:-30px;inset-inline-start:26%;background:var(--card);border:1.5px solid var(--acc);border-radius:18px;padding:10px 16px;font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.08)}.bars p{display:flex;justify-content:space-between;margin:0 0 4px;font-weight:600}.bars p span:last-child{direction:ltr}
+.ring{width:112px;height:112px;flex:none}
+.bars{flex:1;display:grid;gap:10px;font-size:13px}.bars i{display:block;height:7px;border-radius:9px;background:var(--line);overflow:hidden}.bars i u{display:block;height:100%;border-radius:9px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:30px;width:100%;max-width:470px;margin-inline:auto;box-shadow:0 10px 40px rgba(43,54,46,.08)}
+.card h2{font-size:26px}.card .sub{color:var(--mut);margin:4px 0 20px}
+label{display:block;font-size:14px;font-weight:600;margin:14px 0 6px}
+.in{position:relative}
+input{width:100%;height:54px;padding:0 16px;border:1.5px solid #B2AB9C;border-radius:16px;background:var(--fld);color:var(--tx);font:inherit;font-size:16px;text-align:start}
+[dir=rtl] input{text-align:right}
+input:focus{outline:2px solid var(--acc);outline-offset:1px}
+input.bad{border-color:var(--err)}
+.eye{position:absolute;inset-inline-end:10px;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--mut);cursor:pointer;font-size:13px;padding:6px}
+.fe{color:var(--err);font-size:13px;display:block;min-height:0}
+.btn{width:100%;margin-top:20px;height:54px;border:0;border-radius:16px;background:var(--cta);color:var(--ctx);font:700 17px inherit;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 8px 20px rgba(154,79,39,.3)}
+.btn.sec{background:transparent;color:var(--tx);border:1.5px solid #B2AB9C;margin-top:12px}
+.btn:disabled{opacity:.6;cursor:wait}
+.alert{padding:11px 14px;border-radius:14px;font-size:14px;margin-bottom:6px}
+.alert.err{background:var(--errbg);color:var(--err)}.alert.ok{background:var(--okbg);color:var(--tx)}
+.alert a,.lnk{color:var(--cta);cursor:pointer;font-weight:600;text-decoration:underline;background:none;border:0;font:inherit;padding:0}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.sep{display:flex;align-items:center;gap:10px;color:var(--mut);font-size:13px;margin:16px 0 0}.sep:before,.sep:after{content:"";flex:1;height:1px;background:var(--line)}
+.foot{text-align:center;color:var(--mut);font-size:14px;margin-top:18px}
+.rules{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;font-size:12px}.rules span{padding:2px 9px;border-radius:99px;background:var(--line);color:var(--mut)}.rules .y{background:var(--okbg);color:var(--tx)}
+.spin{width:34px;height:34px;border:4px solid var(--line);border-top-color:var(--pri);border-radius:50%;animation:s 1s linear infinite;margin:20px auto}@keyframes s{to{transform:rotate(360deg)}}
+.dash{width:min(1100px,calc(100% - 24px));margin:20px auto;display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.dash .card{max-width:none;margin:0;padding:24px}
+.big{font:700 30px Poppins,sans-serif;color:color-mix(in srgb,var(--acc) 75%,var(--tx));direction:ltr;unicode-bidi:embed}
+@media(max-width:860px){.grid{grid-template-columns:1fr;min-height:0}.hero{display:none}.brand b{font-size:16px}.brand small{font-size:13px}.logo{width:48px;height:48px}.ic{width:44px;height:44px}.nav{padding:12px 14px}.card{padding:22px}}
+.split{display:grid;grid-template-columns:1fr 1fr;min-height:100vh;direction:ltr}
+html[dir=rtl] .split>*{direction:rtl}html[dir=ltr] .split>*{direction:ltr}
+.fp{display:flex;flex-direction:column;gap:20px;padding:22px clamp(20px,5vw,56px) 18px}
+.fb{flex:1;display:flex;flex-direction:column;justify-content:center;width:100%;max-width:470px;margin:0 auto;padding:12px 0}
+.fb h2{font-size:clamp(26px,3.4vw,36px);line-height:1.3;margin:6px 0 8px;color:color-mix(in srgb,var(--acc) 62%,var(--tx))}.fb .sub{color:var(--mut);margin:0 0 20px}.fb .demo{text-align:start;margin:0 0 6px;width:auto}
+.tag{color:color-mix(in srgb,var(--pri) 75%,var(--tx));font-weight:700;font-size:14px}
+.ff{display:flex;align-items:center;gap:8px;color:var(--mut);font-size:13px}.ff svg{width:18px;height:18px}
+.lr{display:flex;justify-content:space-between;align-items:baseline;margin:16px 0 8px}.lr label{margin:0}.lr a{font-size:13px}
+.has input{padding-inline-start:46px}.in.pw input{padding-inline-end:46px}.ii{position:absolute;inset-inline-start:15px;top:50%;transform:translateY(-50%);color:color-mix(in srgb,var(--acc) 85%,var(--tx));display:flex;pointer-events:none}.ii svg,.eye svg{width:20px;height:20px}
+.rem{display:flex;align-items:center;gap:10px;margin:16px 0 0;font-size:14px;font-weight:400;cursor:pointer}.rem input{width:22px;height:22px;padding:0;accent-color:var(--acc)}
+.btn svg{width:20px;height:20px}.btn.sec{box-shadow:none}
+.logo{background:none;box-shadow:none;overflow:hidden;border-radius:31%}.logo svg{display:block;width:100%;height:100%}
+.vp{position:relative;overflow:hidden;background:linear-gradient(160deg,#2f3d33,#18211b);color:#F5F0E8;padding:36px;display:flex;flex-direction:column;justify-content:flex-end}
+.route{position:absolute;inset:0;width:100%;height:100%}
+.chip{position:absolute;background:#F5F0E8;color:#2B362E;border-radius:10px;padding:5px 12px;font-size:13px;font-weight:600;box-shadow:0 6px 18px rgba(0,0,0,.3)}
+.vt{position:relative;z-index:1}.vt small{opacity:.85;font-size:15px}.vt h2{font-size:clamp(30px,3.6vw,50px);line-height:1.2;margin:10px 0 14px}.vt p{opacity:.85;margin:0;max-width:440px}
+.vl{position:absolute;top:30px;inset-inline-start:36px;display:flex;align-items:center;gap:10px;font:700 20px Poppins,sans-serif}.vl .logo{width:44px;height:44px}
+.chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:24px}.chips .chip{position:static;display:inline-flex;align-items:center;gap:8px;background:#BFC4A3;color:#2B362E;padding:8px 16px;border-radius:999px;box-shadow:none}.chips .chip:before{content:"";width:8px;height:8px;border-radius:50%;background:#D9875A}.chips .chip:nth-child(2){background:#D9875A}.chips .chip:nth-child(3){background:#B2AB9C}.chips .chip:nth-child(n+2):before{background:#2B362E}.dash .card:nth-child(1){border-top:4px solid var(--acc)}.dash .card:nth-child(2){border-top:4px solid var(--spr)}.ff svg{color:var(--acc)}
+.vp{justify-content:center;padding-top:96px}.vt h2{font-size:clamp(22px,2.4vw,32px)}
+.stack{display:grid;gap:16px;margin-bottom:34px}
+.sc{position:relative;display:flex;align-items:center;gap:16px;padding:22px 24px 28px;border-radius:28px;box-shadow:0 16px 34px rgba(0,0,0,.3);transition:transform .25s;overflow:hidden}
+.sc i{width:52px;height:52px;border-radius:17px;background:#2B362E;display:grid;place-items:center;flex:none}.sc i svg{width:26px;height:26px}
+.sc b{flex:1;font:700 clamp(20px,2.2vw,27px)/1.25 Poppins,Cairo,sans-serif}
+.sc u{text-decoration:none;font:700 38px Poppins,sans-serif;opacity:.22}
+.sc span{position:absolute;inset-inline-start:24px;bottom:11px;height:5px;width:var(--w);max-width:calc(100% - 48px);border-radius:9px;background:currentColor;opacity:.35}
+.sc:nth-child(1){transform:rotate(-2deg);margin-inline-end:8%}.sc:nth-child(2){transform:rotate(1.5deg);margin-inline-start:8%}.sc:nth-child(3){transform:rotate(-1deg);margin-inline-end:4%}.sc:hover{transform:rotate(0) translateY(-4px)}
+.ca{background:#D9875A;color:#2B362E}.ca i svg{color:#D9875A}
+.cb{background:#6B8063;color:#F5F0E8}.cb i{background:#F5F0E8}.cb i svg{color:#6B8063}
+.cc{background:#BFC4A3;color:#2B362E}.cc i svg{color:#BFC4A3}
+.vp{justify-content:flex-start}.vt{flex:1;display:flex;flex-direction:column}
+.acc{flex:1;min-height:340px;display:flex;flex-direction:column;gap:12px;margin-bottom:28px}
+.ab{flex:1;display:flex;align-items:center;gap:16px;padding:0 24px;border-radius:26px;cursor:pointer;overflow:hidden;transition:flex .55s cubic-bezier(.3,.8,.3,1),box-shadow .3s}
+.ab i{width:52px;height:52px;border-radius:17px;background:#2B362E;display:grid;place-items:center;flex:none}.ab i svg{width:26px;height:26px}
+.ab>div{flex:1;min-width:0}.ab b{display:block;font:700 clamp(20px,2.2vw,28px)/1.3 Poppins,Cairo,sans-serif}
+.ab .ad{margin:4px 0 0;max-height:0;opacity:0;overflow:hidden;transition:max-height .5s,opacity .4s;font-size:14px;line-height:1.5}
+.ab u{text-decoration:none;font:700 44px Poppins,sans-serif;opacity:.2}
+.acc[data-i="0"] .ab:nth-child(1),.acc[data-i="1"] .ab:nth-child(2),.acc[data-i="2"] .ab:nth-child(3){flex:2.6;box-shadow:0 16px 34px rgba(0,0,0,.35)}
+.acc[data-i="0"] .ab:nth-child(1) .ad,.acc[data-i="1"] .ab:nth-child(2) .ad,.acc[data-i="2"] .ab:nth-child(3) .ad{max-height:70px;opacity:.9}
+.lines{flex:1;display:flex;flex-direction:column;justify-content:center;gap:clamp(26px,5vh,48px);position:relative;z-index:1}
+.ln{display:flex;align-items:center;gap:22px}
+.ln s{display:block;flex:none;width:72px;height:8px;border-radius:9px;animation:gl .9s cubic-bezier(.3,.8,.3,1) both;transition:width .35s}
+.ln:nth-child(2) s{animation-delay:.15s}.ln:nth-child(3) s{animation-delay:.3s}.ln:hover s{width:120px}
+.ln b{font:700 clamp(28px,3.4vw,46px)/1.2 Poppins,Cairo,sans-serif;color:#F5F0E8}
+@keyframes gl{from{width:0}}
+@media(max-width:900px){.split{grid-template-columns:1fr}.vp{display:none}}
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script>
+const CONFIG={API_BASE:'',GOOGLE:true,RIGHT:'lines'}; // RIGHT: 'lines' (current) or 'accordion' (previous design, kept as backup)
+const RIGHT=CONFIG.RIGHT; // set API_BASE to your backend, e.g. https://sfeg-system.runasp.net
+const API=(new URLSearchParams(location.search).get('api')||CONFIG.API_BASE).replace(/\/$/,'');
+const MOCK=!API;
+const S={
+brand:['Smart Fitness & Nutrition','منظومة اللياقة والتغذية الذكية'],adm:['Admin Dashboard','لوحة تحكم الإدارة'],
+h1:['Train smart. Eat balanced. <span>Track your progress precisely.</span>','تمرّن بذكاء. تغذّ بتوازن. <span>تتبّع تقدمك بدقة.</span>'],badge:['An integrated system for fitness and sports nutrition','منظومة متكاملة للياقة والتغذية الرياضية'],strength:['Strength training + 2,100 kcal','تمارين القوة + 2,100 سعرة'],sess2:['6 / 8 exercises · 45 min','6 / 8 تمارين · 45 دقيقة'],coach:['Certified coach supervision','إشراف كابتن معتمد'],weekly:['Weekly results review','مراجعة أسبوعية للنتائج'],
+plan:['Today’s plan is ready','خطة اليوم جاهزة'],prot:['Protein','بروتين'],carb:['Carbs','كربوهيدرات'],fat:['Fat','دهون'],
+login_t:['Manage Your Fitness & Nutrition Platform Seamlessly','وجهتك المتكاملة لإدارة التغذية والتمارين'],login_s:['Sign in to continue managing your platform today.','سجّل الدخول لاستكمال إدارة منظومتك اليوم.'],d1:['Personalized programs and sessions for every member.','برامج وجلسات مخصصة لكل متدرب.'],d2:['Meals, macros and calories tracked day by day.','الوجبات والماكروز والسعرات يومًا بيوم.'],d3:['Clear weekly insights on every member’s results.','تقارير أسبوعية واضحة لنتائج كل متدرب.'],tag_in:['Secure sign-in','دخول آمن'],tag_reg:['New account','حساب جديد'],tag_ver:['Verification','التحقق'],tag_rec:['Account recovery','استعادة الحساب'],rem:['Remember me on this device','تذكرني على هذا الجهاز'],prot_by:['Protected by SFNE Secure','محمي بواسطة SFNE Secure'],c1:['Workout plans','خطط التمرين'],c2:['Nutrition tracking','متابعة التغذية'],c3:['Progress reports','تقارير التقدم'],v_k:['Fitness & Nutrition, connected','اللياقة والتغذية في مكان واحد'],v_h:['Every rep, every meal, every result — in one place.','كل تمرين، كل وجبة، وكل نتيجة … في مكان واحد.'],v_p:['Track workouts and nutrition plans, support your coaches, and watch your members’ progress grow.','تابع التمارين وخطط التغذية، وادعم مدربيك، وشاهد تقدّم متدربيك يومًا بعد يوم.'],
+email:['Email','البريد الإلكتروني'],pw:['Password','كلمة المرور'],show:['Show','إظهار'],hide:['Hide','إخفاء'],signin:['Sign in','تسجيل الدخول'],or:['or','أو'],google:['Continue with Google','المتابعة عبر Google'],forgot_q:['Forgot password?','نسيت كلمة المرور؟'],noacc:['No account?','ليس لديك حساب؟'],create_l:['Create one','أنشئ حسابًا'],haveacc:['Already registered?','لديك حساب بالفعل؟'],
+reg_t:['Create account','إنشاء حساب'],reg_s:['Register a dashboard account','سجّل حسابًا جديدًا'],fn:['First name','الاسم الأول'],ln:['Last name','اسم العائلة'],un:['Username','اسم المستخدم'],create:['Create account','إنشاء الحساب'],
+conf_t:['Confirm your email','أكّد بريدك الإلكتروني'],conf_s:['Enter the code we emailed you','أدخل الكود المرسل إلى بريدك'],uid:['User ID (from the email link)','معرّف المستخدم (من رابط البريد)'],code:['Verification code','كود التحقق'],confirm:['Confirm email','تأكيد البريد'],resend:['Resend code','إعادة إرسال الكود'],resent:['A new code was sent to your email.','تم إرسال كود جديد إلى بريدك.'],
+fg_t:['Forgot password','نسيت كلمة المرور'],fg_s:['We’ll email you a reset code','سنرسل لك كود إعادة التعيين'],send:['Send reset code','إرسال الكود'],back:['Back to sign in','العودة لتسجيل الدخول'],
+rs_t:['Reset password','إعادة تعيين كلمة المرور'],rs_s:['Enter the code and your new password','أدخل الكود وكلمة المرور الجديدة'],npw:['New password','كلمة المرور الجديدة'],cpw:['Confirm password','تأكيد كلمة المرور'],reset:['Reset password','تعيين كلمة المرور'],
+cb:['Completing Google sign-in…','جارٍ إكمال الدخول عبر Google…'],
+wel:['Welcome','مرحبًا'],sess:['Session','الجلسة'],tkexp:['Access token expires in','ينتهي رمز الدخول بعد'],rtexp:['Refresh token expires','ينتهي رمز التجديد'],refnow:['Refresh token now','تجديد الرمز الآن'],test:['Test protected call','اختبار طلب محمي'],tok:['Protected call succeeded','نجح الطلب المحمي'],logout:['Sign out','تسجيل الخروج'],mods:['Dashboard modules plug in here.','وحدات لوحة التحكم تُضاف هنا.'],
+demo:['Try','جرّب'],
+m_reg:['Registered. Check your email for the confirmation code.','تم التسجيل. تحقق من بريدك لكود التأكيد.'],m_conf:['Email confirmed. You can sign in now.','تم تأكيد البريد. يمكنك تسجيل الدخول.'],m_fg:['Reset code sent to your email.','تم إرسال كود إعادة التعيين إلى بريدك.'],m_rs:['Password reset. Sign in with the new password.','تم تغيير كلمة المرور. سجّل الدخول بها.'],m_out:['You signed out.','تم تسجيل الخروج.'],m_exp:['Your session expired. Please sign in again.','انتهت الجلسة. سجّل الدخول من جديد.'],m_need:['Please sign in to continue.','سجّل الدخول للمتابعة.'],
+req:['This field is required','هذا الحقل مطلوب'],e_email:['Enter a valid email','أدخل بريدًا صحيحًا'],e_len:['Must be 3–100 characters','يجب أن يكون من 3 إلى 100 حرف'],e_match:['Passwords do not match','كلمتا المرور غير متطابقتين'],
+r8:['8+ characters','8 أحرف+'],rU:['Uppercase','حرف كبير'],rL:['Lowercase','حرف صغير'],rD:['Digit','رقم'],rS:['Special','رمز خاص'],e_pw:['Password does not meet the requirements','كلمة المرور لا تحقق الشروط'],
+'User.InvalidCredentials':['Incorrect email or password.','البريد أو كلمة المرور غير صحيحة.'],'User.LockedUser':['Account locked after too many failed attempts. Try again later.','تم قفل الحساب بسبب محاولات فاشلة كثيرة. حاول لاحقًا.'],'User.Disable':['This account has been disabled by an administrator.','تم تعطيل هذا الحساب من قبل المسؤول.'],'User.EmailNotConfirmed':['Your email is not confirmed yet.','لم يتم تأكيد بريدك بعد.'],'User.EmailRegisteredButNotConfirmed':['Registered but not confirmed. Check your inbox or resend the code.','تم التسجيل دون تأكيد. تحقق من بريدك أو أعد إرسال الكود.'],
+'User.DuplicateUser':['A user with this email already exists.','يوجد مستخدم بهذا البريد بالفعل.'],'User.EmailDuplication':['This email is already registered.','هذا البريد مسجل بالفعل.'],'User.UserNameAlreadyExists':['This username is taken.','اسم المستخدم مستخدم بالفعل.'],'User.UserNotFound':['No account found.','لا يوجد حساب مطابق.'],'User.InvalidCode':['The code is invalid or expired. Request a new one.','الكود غير صحيح أو منتهي. اطلب كودًا جديدًا.'],'User.EmailAlreadyConfirm':['This email is already confirmed.','هذا البريد مؤكد بالفعل.'],'User.InvalidJwtToken':['Invalid session token.','رمز الجلسة غير صالح.'],'User.InvalidRefreshToken':['Session expired or revoked.','انتهت الجلسة أو تم إلغاؤها.'],'ExternalLoginFailed':['Google sign-in failed. Try again.','فشل الدخول عبر Google. حاول مرة أخرى.'],'MissingEmail':['Your Google account did not share an email.','حساب Google لم يشارك البريد الإلكتروني.'],
+net:['Cannot reach the server. Check your connection or CORS settings.','تعذر الاتصال بالخادم. تحقق من الاتصال أو إعدادات CORS.'],gen:['Something went wrong. Please try again.','حدث خطأ. حاول مرة أخرى.']
+};
+const ls={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+const sst={get(k){try{return sessionStorage.getItem(k)}catch(e){return null}},set(k,v){try{sessionStorage.setItem(k,v)}catch(e){}},del(k){try{sessionStorage.removeItem(k)}catch(e){}}};let lang=ls.get('sfne_lang')||'ar',theme=ls.get('sfne_theme')||'',pending={},flash=null,sess=null,refreshing=null;
+const t=k=>(S[k]||[k,k])[lang==='ar'?1:0];
+const $=s=>document.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const PW=/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/,EM=/^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+/* ---------- Mock backend (demo only) ---------- */
+const MK={users:[
+{id:'11111111-aaaa-4aaa-8aaa-111111111111',email:'admin@sfne.com',pw:'Admin@123',first:'Admin',last:'Sfne',user:'admin',ok:true},
+{id:'22222222-aaaa-4aaa-8aaa-222222222222',email:'locked@sfne.com',pw:'Admin@123',first:'Locked',last:'User',user:'locked',ok:true},
+{id:'33333333-aaaa-4aaa-8aaa-333333333333',email:'disabled@sfne.com',pw:'Admin@123',first:'Disabled',last:'User',user:'disabled',ok:true},
+{id:'44444444-aaaa-4aaa-8aaa-444444444444',email:'pending@sfne.com',pw:'Admin@123',first:'Pending',last:'User',user:'pending',ok:false}]};
+function mIssue(u){const rt='rt'+Math.random().toString(36).slice(2),tk='mock.'+u.id+'.'+Date.now()+'.'+Math.random().toString(36).slice(2);
+ ls.set('sfne_mock_cookie',JSON.stringify({rt,tk,uid:u.id}));
+ return{id:u.id,email:u.email,firstName:u.first,lastName:u.last,userName:u.user,token:tk,expiresIn:90,refreshToken:rt,refreshTokenExpiration:new Date(Date.now()+7*864e5).toISOString()}}
+async function mock(path,b,m){await new Promise(r=>setTimeout(r,450));const e=(status,code)=>({status,data:{code,title:code}}),ok=(x={})=>({status:200,data:{isSuccess:true,...x}});
+ const p=path.replace('/api/author/',''),f=k=>MK.users.find(u=>u.email===(b.email||'').toLowerCase()),ck=JSON.parse(ls.get('sfne_mock_cookie')||'null');
+ if(p==='login'){const u=f();if(!u)return e(401,'User.InvalidCredentials');if(u.email.startsWith('locked'))return e(401,'User.LockedUser');if(u.email.startsWith('disabled'))return e(409,'User.Disable');if(u.pw!==b.password)return e(401,'User.InvalidCredentials');if(!u.ok)return e(401,'User.EmailNotConfirmed');return{status:200,data:mIssue(u)}}
+ if(p==='register'){if(f())return e(409,'User.EmailDuplication');if(MK.users.some(u=>u.user===b.userName))return e(409,'User.UserNameAlreadyExists');const u={id:crypto.randomUUID?crypto.randomUUID():'55555555-aaaa-4aaa-8aaa-555555555555',email:b.email.toLowerCase(),pw:b.password,first:b.firstName,last:b.lastName,user:b.userName,ok:false};MK.users.push(u);return ok({message:'Registration successful',userId:u.id})}
+ if(p==='confirm-email'){const u=MK.users.find(u=>u.id===b.userId);if(!u)return e(404,'User.UserNotFound');if(u.ok)return e(400,'User.EmailAlreadyConfirm');if(b.code!=='123456')return e(400,'User.InvalidCode');u.ok=true;return ok()}
+ if(p==='resend-confirm-email'){const u=f();if(!u)return e(404,'User.UserNotFound');if(u.ok)return e(400,'User.EmailAlreadyConfirm');return ok()}
+ if(p==='resend-change-password'){return f()?ok():e(404,'User.UserNotFound')}
+ if(p==='reset-password'){const u=f();if(!u)return e(404,'User.UserNotFound');if(b.code!=='123456')return e(400,'User.InvalidCode');u.pw=b.newPassword;return ok()}
+ if(p==='refresh-token'){if(!ck||(b.refreshToken&&b.refreshToken!==ck.rt))return e(401,'User.InvalidRefreshToken');return{status:200,data:mIssue(MK.users.find(u=>u.id===ck.uid)||MK.users[0])}}
+ if(p==='google-demo'){return{status:200,data:mIssue({id:'66666666-aaaa-4aaa-8aaa-666666666666',email:'google.user@gmail.com',first:'Google',last:'Admin',user:'google_admin'})}}
+ if(p==='revoke-refresh-token'||p==='logout'){ls.del('sfne_mock_cookie');return ok()}
+ if(p==='demo/protected'){const tk=m&&m.tk;return tk&&ck&&tk===ck.tk&&sess&&sess.exp>Date.now()?ok():e(401,'User.InvalidJwtToken')}
+ return e(404,'User.UserNotFound')}
+
+/* ---------- API layer with auto refresh ---------- */
+async function raw(path,body,auth){
+ if(MOCK)return mock(path,body||{},{tk:auth&&sess&&sess.token});
+ try{const r=await fetch(API+path,{method:path==='/api/author/google-callback'?'GET':'POST',credentials:'include',headers:{'Content-Type':'application/json',...(auth&&sess&&sess.token?{Authorization:'Bearer '+sess.token}:{})},body:body?JSON.stringify(body):undefined});
+  let d=null;try{d=await r.json()}catch(e){}return{status:r.status,data:d}}catch(e){return{status:0,data:null}}}
+async function call(path,body,auth,retry=true){
+ let r=await raw(path,body,auth);
+ if(r.status===401&&auth&&retry&&path!=='/api/author/refresh-token'){if(await refresh())return call(path,body,auth,false);expire();throw{status:401,data:{code:'User.InvalidRefreshToken'}}}
+ if(r.status<200||r.status>=300)throw r;return r.data}
+function refresh(){ // shared promise: concurrent 401s wait for one refresh
+ if(refreshing)return refreshing;
+ refreshing=(async()=>{try{const d=await call('/api/author/refresh-token',{token:sess&&sess.token||'',refreshToken:sess&&sess.rt||''},false,false);setSess(d);return true}catch(e){return false}finally{refreshing=null}})();return refreshing}
+function setSess(d){sess={user:{id:d.id,email:d.email,name:d.firstName+' '+d.lastName,userName:d.userName},token:d.token,rt:d.refreshToken,exp:Date.now()+d.expiresIn*1000,rExp:new Date(d.refreshTokenExpiration).getTime()};
+ (ls.get('sfne_rem')==='1'?ls:sst).set('sfne_sess',JSON.stringify({user:sess.user,rExp:sess.rExp}))}
+function clearSess(){sess=null;ls.del('sfne_sess');sst.del('sfne_sess');ls.del('sfne_mock_cookie')}
+function expire(){clearSess();flash={t:'err',m:t('m_exp')};go('login')}
+function errMsg(e){if(!e||e.status===0)return t('net');const j=JSON.stringify(e.data||'');
+ const k=Object.keys(S).find(k=>/^(User\.|ExternalLoginFailed|MissingEmail)/.test(k)&&j.includes(k));if(k)return t(k);
+ const v=e.data&&e.data.errors;if(v){const x=(Array.isArray(v)?v:Object.values(v).flat())[0];if(x)return esc(typeof x==='string'?x:x.description||x.message||t('gen'))}return t('gen')}
+const NC=e=>/EmailNotConfirmed|EmailRegisteredButNotConfirmed/.test(JSON.stringify(e&&e.data||''));
+
+/* ---------- Views ---------- */
+const hero=()=>`<section class="hero"><span class="badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 19C5 10 11 5 20 4c0 9-5 15-15 15z"/></svg>${t('badge')}</span><h1>${t('h1')}</h1><div class="plan"><div class="ph"><b>${t('plan')}</b><span class="live">LIVE<u></u></span></div><div class="row"><svg class="ring" viewBox="0 0 36 36"><circle cx="18" cy="18" r="15.5" fill="none" stroke="var(--line)" stroke-width="3.5"/><circle cx="18" cy="18" r="15.5" fill="none" stroke="var(--pri)" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="66 100" transform="rotate(-90 18 18)"/><text x="18" y="19.5" text-anchor="middle" font-size="7" font-weight="700" fill="var(--tx)">1,420</text><text x="18" y="25" text-anchor="middle" font-size="3" fill="var(--mut)">kcal 2,100</text></svg>
+<div class="bars"><div><p><span>${t('prot')}</span><span>125 / 160 g</span></p><i><u style="width:78%;background:var(--pri)"></u></i></div><div><p><span>${t('carb')}</span><span>140 / 220 g</span></p><i><u style="width:64%;background:var(--acc)"></u></i></div><div><p><span>${t('fat')}</span><span>29 / 55 g</span></p><i><u style="width:52%;background:var(--spr)"></u></i></div></div></div><div class="strip"><div class="sic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 17l10-10M5 15l4 4M15 5l4 4"/></svg></div><div><b>${t('strength')}</b><small>${t('sess2')}</small></div></div><div class="coach"><b>${t('coach')}</b><small>${t('weekly')}</small></div></div></section>`;
+const SVG=p=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+const IC={m:SVG('<rect x="3" y="5" width="18" height="14" rx="3"/><path d="m3 8 9 6 9-6"/>'),l:SVG('<rect x="5" y="11" width="14" height="10" rx="3"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>'),e:SVG('<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>'),eo:SVG('<path d="M3 3l18 18M10.6 6.1A9.6 9.6 0 0 1 12 6c6 0 10 6 10 6a17 17 0 0 1-3.2 3.8M6.5 7.6C3.7 9.4 2 12 2 12s4 7 10 7c1.5 0 2.9-.4 4.1-1"/>'),ar:SVG('<path d="M5 12h14M13 6l6 6-6 6"/>'),sh:SVG('<path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/>'),g:SVG('<circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/>'),mo:SVG('<path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>'),su:SVG('<circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/>')};
+IC.dm=SVG('<path d="M7 17 17 7M4.5 14.5l5 5M14.5 4.5l5 5M3 16l2 2M16 3l2 2M19 6l2 2M6 19l2 2"/>');IC.lf=SVG('<path d="M5 19C5 10 11 5 20 4c0 9-5 15-15 15z"/><path d="M9 15l5-5"/>');IC.ch=SVG('<path d="M4 20h16M7 20v-6M12 20V6M17 20v-9"/>');
+const LOGO='<svg viewBox="0 0 64 64"><rect width="64" height="64" rx="20" fill="#6B8063"/><g transform="rotate(45 32 32)" fill="#BFC4A3"><rect x="22" y="29.5" width="20" height="5"/><rect x="17" y="20" width="5" height="24"/><rect x="14" y="23" width="3" height="18"/><rect x="11" y="26" width="3" height="12"/><rect x="42" y="20" width="5" height="24"/><rect x="47" y="23" width="3" height="18"/><rect x="50" y="26" width="3" height="12"/></g></svg>';
+const nav=()=>`<div class="nav"><div class="brand"><div class="logo">${LOGO}</div><div><b>Smart Fitness <i>&amp; Nutrition</i></b><small>${lang==='ar'?'منظومة اللياقة والتغذية الذكية':'Smart fitness &amp; nutrition system'}</small></div></div><div class="btns"><button class="ic" data-tlang aria-label="Language">${IC.g}</button><button class="ic" data-ttheme aria-label="Theme">${isDark()?IC.su:IC.mo}</button></div></div>`;
+const TAGS={login:'tag_in',register:'tag_reg',confirm:'tag_ver',forgot:'tag_rec',reset:'tag_rec'};
+const demoNote=()=>MOCK?`<div class="demo">${t('demo')} <code>admin@sfne.com / Admin@123</code> · <code>123456</code></div>`:'';
+const fld=(id,lab,type='text',val='',extra='',aside='')=>{const ic=type==='email'?IC.m:type==='password'?IC.l:'';return `<div class="lr"><label for="${id}">${t(lab)}</label>${aside}</div><div class="in${ic?' has':''}${type==='password'?' pw':''}">${ic?`<span class="ii">${ic}</span>`:''}<input id="${id}" name="${id}" type="${type}" value="${esc(val)}" ${type==='email'?'placeholder="name@sfne.com"':''} ${extra}>${type==='password'?`<button type="button" class="eye" data-eye="${id}" aria-label="show">${IC.e}</button>`:''}</div><small class="fe" id="e_${id}"></small>`};
+const rules=id=>`<div class="rules" data-rules="${id}">${[['r8',/.{8,}/],['rU',/[A-Z]/],['rL',/[a-z]/],['rD',/\d/],['rS',/[^A-Za-z0-9]/]].map(r=>`<span data-re="${r[1].source}">${t(r[0])}</span>`).join('')}</div>`;
+const shell=inner=>`<div class="split"><section class="fp">${nav()}<div class="fb"><span class="tag">${t(TAGS[cur]||'tag_in')}</span>${inner}</div><div class="ff">${IC.sh}<span>${t('prot_by')}</span></div></section><aside class="vp" aria-hidden="true"><svg class="route" viewBox="0 0 600 800" preserveAspectRatio="xMidYMid slice"><g transform="translate(300 235) rotate(-35) scale(6) translate(-32 -32)" fill="#BFC4A3" opacity=".13"><rect x="22" y="29.5" width="20" height="5"/><rect x="17" y="20" width="5" height="24"/><rect x="14" y="23" width="3" height="18"/><rect x="11" y="26" width="3" height="12"/><rect x="42" y="20" width="5" height="24"/><rect x="47" y="23" width="3" height="18"/><rect x="50" y="26" width="3" height="12"/></g></svg><div class="vl"><div class="logo">${LOGO}</div><span>SFNE</span></div>${RIGHT==='lines'?`<div class="lines"><div class="ln"><s style="background:#D9875A"></s><b>${t('c1')}</b></div><div class="ln"><s style="background:#BFC4A3"></s><b>${t('c2')}</b></div><div class="ln"><s style="background:#B2AB9C"></s><b>${t('c3')}</b></div></div>`:`<div class="vt"><div class="acc" data-i="${ai}"><div class="ab ca" data-ai="0"><i>${IC.dm}</i><div><b>${t('c1')}</b><p class="ad">${t('d1')}</p></div><u>01</u></div><div class="ab cb" data-ai="1"><i>${IC.lf}</i><div><b>${t('c2')}</b><p class="ad">${t('d2')}</p></div><u>02</u></div><div class="ab cc" data-ai="2"><i>${IC.ch}</i><div><b>${t('c3')}</b><p class="ad">${t('d3')}</p></div><u>03</u></div></div><small>${t('v_k')}</small><h2>${t('v_h')}</h2><p>${t('v_p')}</p></div>`}</aside></div>`;
+const alertBox=()=>{const f=flash;flash=null;return `<div id="al" role="alert" aria-live="polite">${f?`<div class="alert ${f.t}">${f.m}</div>`:''}</div>`};
+const V={
+login:()=>shell(`<h2>${t('login_t')}</h2><p class="sub">${t('login_s')}</p>${alertBox()}${demoNote()}<form data-act="login" novalidate>${fld('email','email','email',pending.email||'','autocomplete="username"')}${fld('password','pw','password','','autocomplete="current-password"',`<a class="lnk" href="#forgot">${t('forgot_q')}</a>`)}<label class="rem"><input type="checkbox" name="remember">${t('rem')}</label><button class="btn">${t('signin')}${IC.ar}</button></form>${CONFIG.GOOGLE?`<div class="sep">${t('or')}</div><button class="btn sec" data-google>${t('google')}</button>`:''}<div class="foot">${t('noacc')} <a class="lnk" href="#register">${t('create_l')}</a></div>`),
+register:()=>shell(`<h2>${t('reg_t')}</h2><p class="sub">${t('reg_s')}</p>${alertBox()}<form data-act="register" novalidate><div class="row2"><div>${fld('firstName','fn')}</div><div>${fld('lastName','ln')}</div></div>${fld('userName','un','text','','autocomplete="username"')}${fld('email','email','email')}${fld('password','pw','password','','autocomplete="new-password"')}${rules('password')}<button class="btn">${t('create')}</button></form><div class="foot">${t('haveacc')} <a class="lnk" href="#login">${t('signin')}</a></div>`),
+confirm:()=>{const q=new URLSearchParams(location.search);return shell(`<h2>${t('conf_t')}</h2><p class="sub">${t('conf_s')}</p>${alertBox()}<form data-act="confirm" novalidate>${fld('userId','uid','text',q.get('userId')||pending.userId||'')}${fld('code','code','text',q.get('code')||'','inputmode="numeric" autocomplete="one-time-code"')}<button class="btn">${t('confirm')}</button></form><form data-act="resend" novalidate style="margin-top:16px">${fld('email','email','email',pending.email||'')}<button class="btn sec">${t('resend')}</button></form><div class="foot"><a class="lnk" href="#login">${t('back')}</a></div>`)},
+forgot:()=>shell(`<h2>${t('fg_t')}</h2><p class="sub">${t('fg_s')}</p>${alertBox()}<form data-act="forgot" novalidate>${fld('email','email','email',pending.email||'')}<button class="btn">${t('send')}</button></form><div class="foot"><a class="lnk" href="#login">${t('back')}</a></div>`),
+reset:()=>shell(`<h2>${t('rs_t')}</h2><p class="sub">${t('rs_s')}</p>${alertBox()}<form data-act="reset" novalidate>${fld('email','email','email',pending.email||'')}${fld('code','code','text','','inputmode="numeric" autocomplete="one-time-code"')}${fld('newPassword','npw','password','','autocomplete="new-password"')}${rules('newPassword')}${fld('confirmPw','cpw','password')}<button class="btn">${t('reset')}</button></form><div class="foot"><a class="lnk" href="#forgot">${t('resend')}</a> · <a class="lnk" href="#login">${t('back')}</a></div>`),
+callback:()=>shell(`<div style="text-align:center"><div class="spin"></div><p>${t('cb')}</p></div>`),
+dashboard:()=>`<div style="padding:22px clamp(16px,4vw,48px) 0">${nav()}</div><div class="dash"><div class="card"><h2>${t('wel')}, ${esc(sess.user.name)}</h2><p class="sub">${esc(sess.user.email)} · @${esc(sess.user.userName)}</p><p>${t('mods')}</p><button class="btn" data-out>${t('logout')}</button></div><div class="card"><h3>${t('sess')}</h3><p class="sub" style="margin-bottom:6px">${t('tkexp')}</p><div class="big" id="tk">--</div><p class="sub" style="margin:14px 0 6px">${t('rtexp')}</p><div id="rt" style="direction:ltr;unicode-bidi:embed">--</div><div id="al" role="alert"></div><button class="btn sec" data-ref>${t('refnow')}</button>${MOCK?`<button class="btn sec" data-test>${t('test')}</button>`:''}</div></div>`
+};
+
+/* ---------- Router ---------- */
+const PUB=['login','register','confirm','forgot','reset','callback'];
+function go(n){if(location.hash==='#'+n)render();else location.hash='#'+n}
+function render(){let n=location.hash.slice(1);if(!V[n])n=sess?'dashboard':'login';
+ if(n==='dashboard'&&!sess){flash=flash||{t:'ok',m:t('m_need')};n='login';history.replaceState(null,'','#login')}
+ if(sess&&PUB.includes(n)&&n!=='callback'){n='dashboard';history.replaceState(null,'','#dashboard')}
+ cur=n;$('#app').innerHTML=V[n]();document.documentElement.scrollTop=0;if(n==='callback')doCallback();if(n==='dashboard')tick()}
+function chrome(){const h=document.documentElement;h.lang=lang;h.dir=lang==='ar'?'rtl':'ltr';
+ if(theme)h.dataset.theme=theme;else delete h.dataset.theme;
+ 
+ }
+const isDark=()=>theme?theme==='dark':matchMedia('(prefers-color-scheme: dark)').matches;
+
+
+/* ---------- Forms ---------- */
+const show=(m,type='err')=>{const a=$('#al');if(a)a.innerHTML=`<div class="alert ${type}">${m}</div>`};
+function validate(f,rule){let bad=false;f.querySelectorAll('.fe').forEach(x=>x.textContent='');f.querySelectorAll('input').forEach(i=>i.classList.remove('bad'));
+ for(const [id,fn] of Object.entries(rule)){const i=f.querySelector('#'+id);const m=fn(i.value.trim(),i.value);if(m){bad=true;f.querySelector('#e_'+id).textContent=t(m);i.classList.add('bad')}}return !bad}
+const R={req:v=>v?'':'req',email:v=>!v?'req':EM.test(v)?'':'e_email',len:v=>!v?'req':v.length<3||v.length>100?'e_len':'',pw:(v,raw)=>!raw?'req':PW.test(raw)?'':'e_pw',pwlogin:(v,raw)=>raw?'':'req'};
+const H={
+async login(f,d){if(!validate(f,{email:R.email,password:R.pwlogin}))return;pending={email:d.email};
+ ls.set('sfne_rem',d.remember?'1':'0');try{setSess(await call('/api/author/login',{email:d.email,password:d.password}));go('dashboard')}catch(e){show(errMsg(e)+(NC(e)?` <a data-rs>${t('resend')}</a>`:''));if(NC(e))$('#al').querySelector('[data-rs]').onclick=()=>go('confirm')}},
+async register(f,d){if(!validate(f,{firstName:R.len,lastName:R.len,userName:R.len,email:R.email,password:R.pw}))return;
+ try{const r=await call('/api/author/register',d);pending={email:d.email,userId:r.userId||''};flash={t:'ok',m:t('m_reg')};go('confirm')}catch(e){show(errMsg(e))}},
+async confirm(f,d){if(!validate(f,{userId:R.req,code:R.req}))return;
+ try{await call('/api/author/confirm-email',{userId:d.userId,code:d.code});flash={t:'ok',m:t('m_conf')};go('login')}catch(e){show(errMsg(e))}},
+async resend(f,d){if(!validate(f,{email:R.email}))return;
+ try{await call('/api/author/resend-confirm-email',{email:d.email});pending.email=d.email;show(t('resent'),'ok')}catch(e){show(errMsg(e))}},
+async forgot(f,d){if(!validate(f,{email:R.email}))return;
+ try{await call('/api/author/resend-change-password',{email:d.email});pending={email:d.email};flash={t:'ok',m:t('m_fg')};go('reset')}catch(e){show(errMsg(e))}},
+async reset(f,d){if(!validate(f,{email:R.email,code:R.req,newPassword:R.pw,confirmPw:(v,raw)=>raw===f.querySelector('#newPassword').value?'':'e_match'}))return;
+ try{await call('/api/author/reset-password',{email:d.email,code:d.code,newPassword:d.newPassword});pending={email:d.email};flash={t:'ok',m:t('m_rs')};go('login')}catch(e){show(errMsg(e))}}};
+document.addEventListener('submit',async e=>{const f=e.target.closest('form[data-act]');if(!f)return;e.preventDefault();
+ const b=f.querySelector('button');b.disabled=true;const d=Object.fromEntries(new FormData(f));d.email=(d.email||'').trim();
+ try{await H[f.dataset.act](f,d)}finally{b.disabled=false}});
+document.addEventListener('input',e=>{const i=e.target;const box=i.id&&document.querySelector(`[data-rules="${i.id}"]`);if(box)box.querySelectorAll('span').forEach(s=>s.className=new RegExp(s.dataset.re).test(i.value)?'y':'')});
+document.addEventListener('click',async e=>{const c=e.target.closest('[data-eye],[data-google],[data-out],[data-ref],[data-test],[data-tlang],[data-ttheme],[data-ai]');if(!c)return;if(c.dataset.ai!==undefined){ai=+c.dataset.ai;c.parentNode.dataset.i=ai;return}if(c.dataset.tlang!==undefined){lang=lang==='ar'?'en':'ar';ls.set('sfne_lang',lang);chrome();return render()}if(c.dataset.ttheme!==undefined){theme=isDark()?'light':'dark';ls.set('sfne_theme',theme);chrome();return render()}
+ if(c.dataset.eye!==undefined){const i=$('#'+c.dataset.eye);const s=i.type==='password';i.type=s?'text':'password';c.innerHTML=s?IC.eo:IC.e}
+ else if(c.dataset.google!==undefined){const back=location.origin+location.pathname+'#callback';
+  if(MOCK){go('callback')}else location.href=API+'/api/author/login-google?returnUrl='+encodeURIComponent(back)}
+ else if(c.dataset.out!==undefined){c.disabled=true;await call('/api/author/revoke-refresh-token',{token:sess&&sess.token||'',refreshToken:sess&&sess.rt||''}).catch(()=>{});await call('/api/author/logout').catch(()=>{});clearSess();flash={t:'ok',m:t('m_out')};go('login')}
+ else if(c.dataset.ref!==undefined){c.disabled=true;if(!(await refresh()))expire();else tick();c.disabled=false}
+ else if(c.dataset.test!==undefined){try{await call('/api/demo/protected',{},true);show(t('tok'),'ok')}catch(e){show(errMsg(e))}tick()}});
+
+/* ---------- Google callback + session timers ---------- */
+async function doCallback(){try{let d;
+ if(MOCK){d=(await mock('/api/author/google-demo',{})).data}
+ else d=await call('/api/author/refresh-token',{},false,false); // backend set HttpOnly cookies; read them via refresh fallback
+ setSess(d);go('dashboard')}catch(e){flash={t:'err',m:errMsg(e.status?e:{data:{code:'ExternalLoginFailed'}})};go('login')}}
+const fmt=ms=>{const s=Math.max(0,Math.floor(ms/1000));return Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};
+function tick(){if(!sess)return;const tk=$('#tk');if(tk){tk.textContent=fmt(sess.exp-Date.now());$('#rt').textContent=new Date(sess.rExp).toLocaleString(lang==='ar'?'ar-EG':'en-GB')}}
+setInterval(async()=>{if(!sess)return;tick();
+ if(sess.rExp<Date.now())return expire();
+ if(sess.exp-Date.now()<20000&&!refreshing){if(!(await refresh()))expire()}},1000);
+let ai=0;setInterval(()=>{const a=document.querySelector('.acc');if(a&&!a.matches(':hover')){ai=(ai+1)%3;a.dataset.i=ai}},3200);
+addEventListener('hashchange',render);
+
+/* ---------- Boot: restore session from cookies ---------- */
+(async()=>{chrome();const saved=JSON.parse(ls.get('sfne_sess')||sst.get('sfne_sess')||'null');
+ if(saved&&saved.rExp>Date.now()){$('#app').innerHTML=V.callback();if(!(await refresh())){clearSess()}}
+ render()})();
+</script>
+</body>
+</html>
