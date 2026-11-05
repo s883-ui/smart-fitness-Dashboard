@@ -90,7 +90,19 @@ html[dir=rtl] .split>*{direction:rtl}html[dir=ltr] .split>*{direction:ltr}
 .ab u{text-decoration:none;font:700 44px Poppins,sans-serif;opacity:.2}
 .acc[data-i="0"] .ab:nth-child(1),.acc[data-i="1"] .ab:nth-child(2),.acc[data-i="2"] .ab:nth-child(3){flex:2.6;box-shadow:0 16px 34px rgba(0,0,0,.35)}
 .acc[data-i="0"] .ab:nth-child(1) .ad,.acc[data-i="1"] .ab:nth-child(2) .ad,.acc[data-i="2"] .ab:nth-child(3) .ad{max-height:70px;opacity:.9}
-.lines{flex:1;display:flex;flex-direction:column;justify-content:center;gap:clamp(26px,5vh,48px);position:relative;z-index:1}
+    .lines {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: clamp(26px,5vh,48px);
+        position: relative;
+        z-index: 1
+    }
+
+    .vp {
+        padding-top: 36px
+    }
 .ln{display:flex;align-items:center;gap:22px}
 .ln s{display:block;flex:none;width:72px;height:8px;border-radius:9px;animation:gl .9s cubic-bezier(.3,.8,.3,1) both;transition:width .35s}
 .ln:nth-child(2) s{animation-delay:.15s}.ln:nth-child(3) s{animation-delay:.3s}.ln:hover s{width:120px}
@@ -108,7 +120,8 @@ input[type=password]::-ms-reveal,input[type=password]::-ms-clear{display:none}
 <body>
 <main id="app"></main>
 <script>
-const CONFIG={API_BASE:'https://sfeg-system.runasp.net',ACC:['/Account','/api/Account'],RIGHT:'lines'}; // API_BASE = رابط الباك إند | ACC = بادئات مسارات Account (بيجرب بالترتيب) // RIGHT: 'lines' (current) or 'accordion' (previous design, kept as backup)
+    const CONFIG = {
+        API_BASE: location.origin, GOOGLE: true, RIGHT:'lines'}; // API_BASE = رابط الباك إند | ACC = بادئات مسارات Account (بيجرب بالترتيب) // RIGHT: 'lines' (current) or 'accordion' (previous design, kept as backup)
 const RIGHT=CONFIG.RIGHT; // set API_BASE to your backend, e.g. https://sfeg-system.runasp.net
 const API=(new URLSearchParams(location.search).get('api')||CONFIG.API_BASE).replace(/\/$/,'');
 const S={
